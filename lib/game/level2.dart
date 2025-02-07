@@ -110,10 +110,15 @@ class Level2 extends FlameGame with HasCollisionDetection, TapDetector {
   }
 
   @override
-  void onTapDown(TapDownInfo info) {
-    if (!isGameOver) {
+  void onTapDown(TapDownInfo info) async {
+    if (!isGameOver && player.isActive) {
       player.jump();
     }
+   else if (isGameOver) {
+      
+      restartGame(); 
+      
+    } 
   }
 
   void gameOver() {
@@ -121,6 +126,26 @@ class Level2 extends FlameGame with HasCollisionDetection, TapDetector {
     isGameOver = true;
     player.isActive = false;
     add(GameOverText2());
+  }
+
+   
+
+  void restartGame() {
+    isGameOver = false;
+    player.isActive = true;
+    score = 0;
+    obstacleSpeed = 300;
+    removeWhere((component) => component is GameOverText2);
+    player.position = Vector2(50, groundHeight - player.size.y);
+
+    obstacles.forEach((obstacle) {
+      remove(obstacle);
+    });
+    obstacles.clear();
+
+
+
+   
   }
 }
 
@@ -178,6 +203,8 @@ class Player2 extends SpriteComponent with HasGameRef<Level2>, CollisionCallback
       gameRef.gameOver();
     }
   }
+
+ 
 }
 
 // 🧱 Engeller
