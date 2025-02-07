@@ -9,7 +9,7 @@ import 'player.dart';
 import 'enemy.dart';
 import 'score_text.dart';
 import 'transition.dart';
-import 'level2.dart'; // ✅ Level2'yi ekledik
+
 
 class Level1 extends FlameGame with HasCollisionDetection, TapDetector {
   late Player player;
@@ -23,20 +23,20 @@ class Level1 extends FlameGame with HasCollisionDetection, TapDetector {
 
   @override
   Future<void> onLoad() async {
-    await super.onLoad(); // Layout tamamlanmasını bekleyin
+    await super.onLoad(); 
 
-    // 🎮 Arka plan
+
     background = SpriteComponent()
       ..sprite = await loadSprite('background.avif')
       ..size = size;
     add(background);
 
-    // 🎮 Oyuncuyu ekle
+
     player = Player();
     add(player);
     add(ScoreText());
 
-    // 💀 Düşmanları ekle
+
     for (int i = 0; i < 3; i++) {
       final enemy = Enemy();
       enemies.add(enemy);
@@ -51,7 +51,7 @@ class Level1 extends FlameGame with HasCollisionDetection, TapDetector {
     );
     add(joystick);
 
-    // 🔊 Sesleri yükle ve müziği başlat
+   
     await FlameAudio.audioCache.loadAll(['jump.mp3', 'hit.mp3', 'background.mp3']);
     FlameAudio.bgm.play('background.mp3', volume: 1.0);
   }
@@ -63,7 +63,7 @@ class Level1 extends FlameGame with HasCollisionDetection, TapDetector {
 
     gameSpeed += dt * 5;
 
-    // ✅ Skor 75'e ulaştığında seviye tamamlanır
+
     if (score >= 15) {
       completeLevel();
     }
@@ -81,12 +81,12 @@ class Level1 extends FlameGame with HasCollisionDetection, TapDetector {
     isLevelComplete = true;
     FlameAudio.bgm.stop();
 
-    // ✅ Başarı mesajı ve Seviye 2'ye geçiş
+  
     add(TransitionText(
       "Başardınız!\nLevel 2'ye Geç",
       onPressed: () {
-        overlays.add('Level2'); // ✅ Level2'yi ekleyerek geçişi sağlıyoruz
-        overlays.remove('Level1'); // ✅ Level1'i devre dışı bırakıyoruz
+        overlays.add('Level2'); 
+        overlays.remove('Level1'); 
       },
     ));
   }

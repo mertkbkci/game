@@ -14,37 +14,36 @@ class Level2 extends FlameGame with HasCollisionDetection, TapDetector {
   bool isGameOver = false;
   int score = 0;
 
-  late double groundHeight; // Zemin yüksekliği
-  double obstacleSpeed = 300; // Engellerin başlangıç hızı
+  late double groundHeight; 
+  double obstacleSpeed = 300;
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // 🎮 Arka planı yükle ve ekle
+   
     background = SpriteComponent()
       ..sprite = await loadSprite('background2.jpg')
       ..size = size
       ..position = Vector2.zero();
     add(background);
 
-    // 🟢 Zemin yüksekliğini ayarla
+   
     groundHeight = size.y - 100;
 
-    // 🎮 Oyuncuyu oluştur
+ 
     player = Player2(groundHeight: groundHeight);
     add(player);
 
-    // 📝 Skor metnini ekle
+
     add(ScoreText2());
 
-    // 🔧 Çarpışma algılamayı aktif et
+ 
     add(ScreenHitbox());
 
-    // 📱 Ekranı yatay moda döndür
+   
     await SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeRight]);
 
-    // 🧱 Engelleri oluşturmak için başlangıç gecikmesi
     Future.delayed(const Duration(seconds: 1), () {
       spawnObstacle();
       Future.doWhile(() async {
@@ -61,7 +60,7 @@ class Level2 extends FlameGame with HasCollisionDetection, TapDetector {
   void onMount() {
     super.onMount();
     
-    // 🔧 Oyuncuyu zemine oturt
+
     player.setPositionToGround(groundHeight);
   }
 
@@ -74,7 +73,7 @@ class Level2 extends FlameGame with HasCollisionDetection, TapDetector {
       background.position = Vector2.zero();
       groundHeight = canvasSize.y - 100;
 
-      // 🟢 Oyuncunun zemine oturtulmasını sağla
+     
       player.setPositionToGround(groundHeight);
     }
   }
@@ -84,12 +83,12 @@ class Level2 extends FlameGame with HasCollisionDetection, TapDetector {
     super.update(dt);
     if (isGameOver) return;
 
-    // Engelleri hareket ettir
+   
     for (var obstacle in obstacles) {
       obstacle.moveLeft(dt * obstacleSpeed);
     }
 
-    // Skoru ve engelleri kontrol et
+
     obstacles.removeWhere((obstacle) {
       if (obstacle.position.x < -obstacle.size.x && !obstacle.counted) {
         score++;
@@ -99,7 +98,7 @@ class Level2 extends FlameGame with HasCollisionDetection, TapDetector {
       return false;
     });
 
-    // Zamanla engellerin hızını artır
+
     obstacleSpeed += dt * 5;
   }
 
